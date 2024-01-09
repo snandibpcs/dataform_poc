@@ -1,0 +1,6 @@
+{
+  "name": "dataform_git_integration_poc",
+  "dependencies": {
+    "@dataform/core": "2.4.2"
+  }
+}
