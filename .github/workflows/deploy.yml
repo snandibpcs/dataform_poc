@@ -13,7 +13,15 @@ jobs:
         with:
           node-version: 16
       - run: npm install -g @dataform/cli
-      - run: gcloud auth activate-service-account --key-file ${{ secrets.GCP_SA_KEY }}
+      
+      - name: Write the GCP key to a file
+        run: |
+          echo '${{ secrets.GCP_SA_KEY }}' > gcp-key.json
+
+      - name: Authenticate with GCP using the service account
+        run: |
+          gcloud auth activate-service-account --key-file gcp-key.json
+
       - run: dataform compile
       - run: dataform deploy
         env:
