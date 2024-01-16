@@ -1,7 +1,1 @@
-name: CI
-on:
-  # Triggers the workflow on push or pull request events but only for the "quickstart_workspace" branch
-  push:
-    branches: [ "quickstart_workspace" ]
-  pull_request:
-    branches: [ "quickstart_workspace" ]
+
