@@ -12,7 +12,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
-      - run: npm install -g @dataform/cli @dataform/cli-deploy
+      - run: npm install -g @dataform/cli
       - run: gcloud auth activate-service-account --key-file ${{ secrets.GCP_SA_KEY }}
       - run: dataform compile
       - run: dataform deploy
