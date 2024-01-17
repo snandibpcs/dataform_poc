@@ -2,7 +2,7 @@ name: Dataform Compilation and Deployment
  
 on:
   push:
-    branches: [main]
+    branches: [quickstart_workspace]
  
 jobs:
   compile-and-deploy:
