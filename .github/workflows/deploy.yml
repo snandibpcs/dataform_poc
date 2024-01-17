@@ -24,5 +24,9 @@ jobs:
         run: |
           gcloud auth activate-service-account --key-file gcp-key.json
 
+      - name: Setup Dataform credentials
+        run: |
+          echo '${{ secrets.DATAFORM_CREDENTIALS }}' > .df-credentials.json
+
       - run: dataform compile
       - run: dataform run
