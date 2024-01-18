@@ -29,4 +29,3 @@ jobs:
           echo '${{ secrets.DATAFORM_CREDENTIALS }}' > .df-credentials.json
 
       - run: dataform compile
-      - run: dataform run
