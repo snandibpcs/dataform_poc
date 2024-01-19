@@ -28,4 +28,12 @@ jobs:
         run: |
           echo '${{ secrets.DATAFORM_CREDENTIALS }}' > .df-credentials.json
 
-      - run: dataform compile
+      - name: Run Dataform Compile
+        run: |
+         curl -X POST \
+          'https://dataform.googleapis.com/v1beta1/projects/centerfield-poc/locations/us-central1/repositories/dataform_git_integration_poc/compilationResults' \
+          -H "Authorization: Bearer $(gcloud auth print-access-token)" \
+          -H 'Content-Type: application/json' \
+          -d '{
+                "releaseConfig": "projects/centerfield-poc/locations/us-central1/repositories/dataform_git_integration_poc/releaseConfigs/stage"
+              }'
