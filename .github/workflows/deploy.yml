@@ -28,12 +28,24 @@ jobs:
         run: |
           echo '${{ secrets.DATAFORM_CREDENTIALS }}' > .df-credentials.json
 
-      - name: Run Dataform Compile
+      - name: Run Dataform Compile and set the compile result name to release config
         run: |
-         curl -X POST \
-          'https://dataform.googleapis.com/v1beta1/projects/centerfield-poc/locations/us-central1/repositories/dataform_git_integration_poc/compilationResults' \
+          COMPILATION_RESPONSE=$(curl -X POST \
+            'https://dataform.googleapis.com/v1beta1/projects/centerfield-poc/locations/us-central1/repositories/dataform_git_integration_poc/compilationResults' \
+            -H "Authorization: Bearer $(gcloud auth print-access-token)" \
+            -H 'Content-Type: application/json' \
+            -d '{
+                    "releaseConfig": "projects/centerfield-poc/locations/us-central1/repositories/dataform_git_integration_poc/releaseConfigs/stage"
+                }'
+          )
+          COMPILATION_NAME=$(echo $COMPILATION_RESPONSE | jq '.name')
+          COMPILATION_NAME_TRIMMED=$(echo $COMPILATION_NAME | tr -d '"')
+          
+          curl -X PATCH \
+          'https://dataform.googleapis.com/v1beta1/projects/centerfield-poc/locations/us-central1/repositories/dataform_git_integration_poc/releaseConfigs/stage' \
           -H "Authorization: Bearer $(gcloud auth print-access-token)" \
           -H 'Content-Type: application/json' \
           -d '{
-                "releaseConfig": "projects/centerfield-poc/locations/us-central1/repositories/dataform_git_integration_poc/releaseConfigs/stage"
+                "gitCommitish": "quickstart_workspace",
+                "releaseCompilationResult":  "'$COMPILATION_NAME_TRIMMED'"
               }'
